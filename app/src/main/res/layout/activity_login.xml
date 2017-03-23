@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="@string/login_username"
+        android:hint="@string/login_username"
         android:ems="10"
         android:id="@+id/loginUsername" />
 
     <EditText
-        android:text="@string/login_password"
+        android:hint="@string/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
@@ -35,7 +35,9 @@
         android:text="@string/login_register_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:onClick="onLoginRegisterLinkTextViewClicked"
         android:id="@+id/loginRegisterLinkTextView" />
-
 
 </LinearLayout>

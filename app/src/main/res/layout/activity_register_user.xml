@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register_user"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp"
+        tools:context="com.mprtcz.tictactoe.activities.RegisterUser">
+
+        <TextView
+            android:id="@+id/registerNewUserTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/register_new_textview"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/registerUsernameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/register_user_name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/registerUserNicknameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/register_user_nickname"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/registerUserPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/register_user_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/registerUserConfirmPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/register_confirm_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/registerUserEmailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/register_user_email"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/registerUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_user_button" />
+    </LinearLayout>
+</ScrollView>
