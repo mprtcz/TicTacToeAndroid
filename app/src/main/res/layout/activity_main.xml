@@ -17,11 +17,19 @@
     <ListView
         android:id="@+id/usersOnlineListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
     <ListView
         android:id="@+id/gamesOnlineListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/loginRegisterButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="onLoginRegisterButtonClicked"
+        android:text="@string/log_in_register_button"/>
 
 </LinearLayout>

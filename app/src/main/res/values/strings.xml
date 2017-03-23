@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">TicTacToe</string>
     <string name="summary_text">SummaryText</string>
+    <string name="log_in_register_button">Log In / Register</string>
+    <string name="login_username">Name</string>
+    <string name="login_password">Password</string>
+    <string name="login_button">Button</string>
+    <string name="login_register_link">Create an account</string>
 </resources>
