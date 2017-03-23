@@ -8,9 +8,19 @@ public class User {
 
     private String ssoId;
 
-    private String password;
-
     private String nickname;
 
+    private String email;
+
     private String role;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "ssoId='" + ssoId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

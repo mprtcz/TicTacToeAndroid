@@ -1,13 +1,17 @@
 package com.mprtcz.tictactoe.user.service;
 
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
+import com.mprtcz.tictactoe.user.endpoint.LoggedUserDataStore;
+import com.mprtcz.tictactoe.user.model.User;
 
 import java.util.List;
 
+import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,6 +57,48 @@ public class UserService {
                 Log.e(TAG, "Failure to call users: " + call.toString() +" with throwable " + t.toString());
             }
         };
+    }
+
+    private Callback<User> getAuthenticationCallback() {
+        return new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.code() == 200) {
+                    Headers headers = response.headers();
+                    if(headers.names().contains("Set-Cookie")) {
+                        LoggedUserDataStore.setLoggedUserAndSession(response.body(),
+                                getSessionIdString(headers.get("Set-Cookie")));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, "Response unsuccessful, " + t.toString());
+            }
+        };
+    }
+
+    private static String getSessionIdString(String cookieString) {
+        String[] cookieParts = cookieString.split(";");
+        for (String s :
+                cookieParts) {
+            if(s. contains("JSESSIONID=")) {
+                return s;
+            }
+        }
+        return "";
+    }
+
+    public void authenticateUser(String name, String password) {
+        String headerData = "Basic " +new String(encodeUserAndPassword(name, password));
+        this.asyncService.authenticateUser(getAuthenticationCallback(), headerData.replace("\n", ""));
+    }
+
+    private byte[] encodeUserAndPassword(String name, String password) {
+        String joinedData = name + ":" + password;
+        byte[] data = joinedData.getBytes();
+        return Base64.encode(data, Base64.DEFAULT);
     }
 
     private class SummaryPresenter {
