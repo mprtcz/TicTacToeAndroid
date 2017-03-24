@@ -35,8 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginButtonConfirmClicked(View view) {
         if(validateEnteredUserData()) {
             UserService userService = new UserService(new AsyncService());
-            userService.authenticateUser(this.loginUsernameEditText.getText().toString(),
-                    this.loginPasswordEditText.getText().toString());
+            userService.authenticateUser(this);
         }
     }
 
@@ -51,5 +50,23 @@ public class LoginActivity extends AppCompatActivity {
             this.loginPasswordEditText.setError(getString(R.string.login_password_empty));
         }
         return flag;
+    }
+
+    public String getLoginUsername() {
+        return loginUsernameEditText.getText().toString();
+    }
+
+    public String getLoginPassword() {
+        return loginPasswordEditText.getText().toString();
+    }
+
+    public void setBadCredentialsErrorMessage() {
+        loginPasswordEditText.setError(getString(R.string.bad_login_error));
+        loginUsernameEditText.setError(getString(R.string.bad_login_error));
+    }
+
+    public void redirectSuccessfulLogin() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

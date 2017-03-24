@@ -1,4 +1,4 @@
-package com.mprtcz.tictactoe.user.endpoint;
+package com.mprtcz.tictactoe.utils;
 
 import android.util.Log;
 
@@ -15,6 +15,14 @@ public class LoggedUserDataStore {
     private String sessionId;
 
     private LoggedUserDataStore() {}
+
+    public static boolean isUserLoggedIn() {
+        return loggedUserDataStore != null;
+    }
+
+    public static void clearCredentials() {
+        loggedUserDataStore = null;
+    }
 
     public static void setLoggedUserAndSession(User user, String sessionId) {
         if(loggedUserDataStore == null) {

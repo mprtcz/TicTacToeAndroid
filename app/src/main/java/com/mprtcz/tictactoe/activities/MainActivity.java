@@ -3,6 +3,7 @@ package com.mprtcz.tictactoe.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,9 +13,13 @@ import android.widget.TextView;
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.user.service.UserService;
+import com.mprtcz.tictactoe.utils.ToolbarHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     ListView usersOnlineListView;
     TextView summaryTextView;
     Button loginRegisterButton;
@@ -26,9 +31,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(ToolbarHelper.chooseToolbarIcons(this));
+        Log.d(TAG, "is budled state saved = " + (savedInstanceState == null));
         getUIElementsReferences();
         getFieldsReferences();
-        getUsersFromServer();
+        if(savedInstanceState == null) {
+            getUsersFromServer();
+        }
     }
 
     private void getFieldsReferences() {
@@ -51,5 +60,23 @@ public class MainActivity extends AppCompatActivity {
     public void onLoginRegisterButtonClicked(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        ArrayList<String> userNames = new ArrayList<>();
+        for (int i = 0; i < userNamesArrayAdapter.getCount(); i++) {
+            userNames.add(userNamesArrayAdapter.getItem(i));
+        }
+        state.putStringArrayList("users", userNames);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        if(state.getStringArrayList("users") != null) {
+            userNamesArrayAdapter.addAll(state.getStringArrayList("users"));
+        }
     }
 }

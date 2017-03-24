@@ -5,8 +5,9 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.mprtcz.tictactoe.activities.LoginActivity;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
-import com.mprtcz.tictactoe.user.endpoint.LoggedUserDataStore;
+import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 import com.mprtcz.tictactoe.user.model.User;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class UserService {
         };
     }
 
-    private Callback<User> getAuthenticationCallback() {
+    private Callback<User> getAuthenticationCallback(final LoginActivity loginActivity) {
         return new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -69,6 +70,9 @@ public class UserService {
                         LoggedUserDataStore.setLoggedUserAndSession(response.body(),
                                 getSessionIdString(headers.get("Set-Cookie")));
                     }
+                    loginActivity.redirectSuccessfulLogin();
+                } else {
+                    loginActivity.setBadCredentialsErrorMessage();
                 }
             }
 
@@ -90,9 +94,11 @@ public class UserService {
         return "";
     }
 
-    public void authenticateUser(String name, String password) {
-        String headerData = "Basic " +new String(encodeUserAndPassword(name, password));
-        this.asyncService.authenticateUser(getAuthenticationCallback(), headerData.replace("\n", ""));
+    public void authenticateUser(LoginActivity loginActivity) {
+        String headerData = "Basic " +new String(encodeUserAndPassword(
+                loginActivity.getLoginUsername(),
+                loginActivity.getLoginPassword()));
+        this.asyncService.authenticateUser(getAuthenticationCallback(loginActivity), headerData.replace("\n", ""));
     }
 
     private byte[] encodeUserAndPassword(String name, String password) {

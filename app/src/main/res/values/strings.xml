@@ -15,4 +15,10 @@
     <string name="register_user_email">Email</string>
     <string name="login_name_empty">Type username</string>
     <string name="login_password_empty">Enter password</string>
+    <string name="bad_login_error">Bad username or password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_favorite">Logged In</string>
+    <string name="title">TicTacToe</string>
 </resources>
