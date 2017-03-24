@@ -22,7 +22,7 @@ import retrofit2.Response;
  */
 
 public class UserService {
-    public static final String TAG = "UserService";
+    private static final String TAG = "UserService";
     private AsyncService asyncService;
     private SummaryPresenter summaryPresenter;
 

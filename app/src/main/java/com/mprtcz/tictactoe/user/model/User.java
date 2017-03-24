@@ -14,6 +14,22 @@ public class User {
 
     private String role;
 
+    public String getSsoId() {
+        return ssoId;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
     @Override
     public String toString() {
         return "User{" +

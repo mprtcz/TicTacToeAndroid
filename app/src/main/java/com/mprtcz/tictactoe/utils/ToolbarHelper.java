@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.activities.LoginActivity;
 import com.mprtcz.tictactoe.activities.RegisterUser;
+import com.mprtcz.tictactoe.activities.UserProfile;
 
 /**
  * Created by Azet on 2017-03-24.
@@ -22,6 +23,13 @@ public class ToolbarHelper {
         ImageView secondIcon = (ImageView) myToolbar.findViewById(R.id.secondToolbarIcon);
         if(LoggedUserDataStore.isUserLoggedIn()) {
             firstIcon.setImageResource(R.drawable.ic_person_black_24dp);
+            firstIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(activity, UserProfile.class);
+                    activity.startActivity(intent);
+                }
+            });
             secondIcon.setImageResource(R.drawable.ic_exit_to_app_black_24dp);
         } else {
             firstIcon.setImageResource(R.drawable.ic_person_black_24dp);

@@ -21,4 +21,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_favorite">Logged In</string>
     <string name="title">TicTacToe</string>
+    <string name="user_profile_name">TextView</string>
+    <string name="user_profile_name_textview">User name :</string>
+    <string name="user_profile_nickname_textview">User nickname :</string>
+    <string name="user_profile_email_textview">User email :</string>
+    <string name="show_history">Show history</string>
+    <string name="show_moves_button">Show moves</string>
 </resources>

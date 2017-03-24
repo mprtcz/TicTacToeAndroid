@@ -2,6 +2,7 @@ package com.mprtcz.tictactoe.asyncservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mprtcz.tictactoe.game.endpoint.GameEndpoint;
 import com.mprtcz.tictactoe.user.endpoint.UserEndpoint;
 
 import okhttp3.OkHttpClient;
@@ -18,7 +19,9 @@ public class RetrofitUtils {
     private Retrofit retrofit;
     private static RetrofitUtils retrofitUtils;
 
-    private RetrofitUtils() {createRetrofitInstance();}
+    private RetrofitUtils() {
+        createRetrofitInstance();
+    }
 
     private void createRetrofitInstance() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -40,11 +43,16 @@ public class RetrofitUtils {
 
     public static UserEndpoint getUserEndpointRetrofit() {
         Retrofit retrofit = getInstance();
-        return  retrofit.create(UserEndpoint.class);
+        return retrofit.create(UserEndpoint.class);
+    }
+
+    public static GameEndpoint getGameEndpointRetrofit() {
+        Retrofit retrofit = getInstance();
+        return retrofit.create(GameEndpoint.class);
     }
 
     public static Retrofit getInstance() {
-        if(retrofitUtils == null) {
+        if (retrofitUtils == null) {
             retrofitUtils = new RetrofitUtils();
         }
         return retrofitUtils.getRetrofit();
