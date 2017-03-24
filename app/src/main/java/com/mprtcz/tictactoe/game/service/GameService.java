@@ -46,6 +46,7 @@ public class GameService {
                     List<GameRecord> gameRecords = response.body();
                     Log.d(TAG, "Game records : " + gameRecords.toString());
                     tableLayout.setVisibility(View.VISIBLE);
+                    tableLayout.addView(getTableHeadrers(activity));
                     for (GameRecord gameRecord :
                             gameRecords) {
                         tableLayout.addView(getTableRow(activity, gameRecord));
@@ -76,6 +77,26 @@ public class GameService {
         tableRow.addView(secondPlayerTextView);
         tableRow.addView(dateTextView);
         tableRow.addView(actionButton);
+        return tableRow;
+    }
+
+    private TableRow getTableHeadrers(Activity activity) {
+        TableRow tableRow = new TableRow(activity);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+        tableRow.setLayoutParams(lp);
+        tableRow.setLayoutParams(lp);
+        TextView firstPlayerTextView = new TextView(activity);
+        firstPlayerTextView.setText(R.string.table_row_first_player_header);
+        TextView secondPlayerTextView = new TextView(activity);
+        secondPlayerTextView.setText(R.string.table_row_second_player_header);
+        TextView dateTextView = new TextView(activity);
+        dateTextView.setText(R.string.table_row_date_header);
+        TextView actionTextView = new TextView(activity);
+        actionTextView.setText(R.string.table_row_action);
+        tableRow.addView(firstPlayerTextView);
+        tableRow.addView(secondPlayerTextView);
+        tableRow.addView(dateTextView);
+        tableRow.addView(actionTextView);
         return tableRow;
     }
 }
