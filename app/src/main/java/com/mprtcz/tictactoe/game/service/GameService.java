@@ -2,7 +2,6 @@ package com.mprtcz.tictactoe.game.service;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -24,8 +23,6 @@ import retrofit2.Response;
  */
 
 public class GameService {
-
-
     private static final String TAG = "GameService";
     private AsyncService asyncService;
 
@@ -45,12 +42,8 @@ public class GameService {
                 if (response.code() == 200) {
                     List<GameRecord> gameRecords = response.body();
                     Log.d(TAG, "Game records : " + gameRecords.toString());
-                    tableLayout.setVisibility(View.VISIBLE);
-                    tableLayout.addView(getTableHeadrers(activity));
-                    for (GameRecord gameRecord :
-                            gameRecords) {
-                        tableLayout.addView(getTableRow(activity, gameRecord));
-                    }
+                    populateTableRows(activity, tableLayout, gameRecords);
+                    LoggedUserDataStore.setGameRecords(gameRecords);
                 }
             }
 
@@ -59,6 +52,14 @@ public class GameService {
                 Log.e(TAG, "Game records request failure: " + t.toString());
             }
         };
+    }
+
+    public void populateTableRows(Activity activity, TableLayout tableLayout, List<GameRecord> gameRecords) {
+        tableLayout.addView(getTableHeaders(activity));
+        for (GameRecord gameRecord :
+                gameRecords) {
+            tableLayout.addView(getTableRow(activity, gameRecord));
+        }
     }
 
     private TableRow getTableRow(Activity activity, GameRecord gameRecord) {
@@ -80,7 +81,7 @@ public class GameService {
         return tableRow;
     }
 
-    private TableRow getTableHeadrers(Activity activity) {
+    private TableRow getTableHeaders(Activity activity) {
         TableRow tableRow = new TableRow(activity);
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
         tableRow.setLayoutParams(lp);

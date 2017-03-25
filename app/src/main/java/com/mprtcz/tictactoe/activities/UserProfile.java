@@ -14,6 +14,7 @@ import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 import com.mprtcz.tictactoe.utils.ToolbarHelper;
 
 public class UserProfile extends AppCompatActivity {
+    private static final String TAG = "UserProfile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,10 @@ public class UserProfile extends AppCompatActivity {
     public void onShowHistoryButtonClicked(View view) {
         GameService gameService = new GameService(new AsyncService());
         TableLayout tableLayout = (TableLayout) findViewById(R.id.gamesHistoryTableLayout);
-        gameService.getGamesHistoryFromServer(this, tableLayout);
+        if(LoggedUserDataStore.getGameRecords() != null && !LoggedUserDataStore.getGameRecords().isEmpty()) {
+            gameService.populateTableRows(this, tableLayout, LoggedUserDataStore.getGameRecords());
+        } else {
+            gameService.getGamesHistoryFromServer(this, tableLayout);
+        }
     }
 }

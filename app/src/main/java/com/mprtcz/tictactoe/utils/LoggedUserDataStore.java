@@ -2,7 +2,11 @@ package com.mprtcz.tictactoe.utils;
 
 import android.util.Log;
 
+import com.mprtcz.tictactoe.game.model.GameRecord;
 import com.mprtcz.tictactoe.user.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Azet on 2017-03-23.
@@ -13,6 +17,7 @@ public class LoggedUserDataStore {
     private User loggedInUser;
     private static LoggedUserDataStore loggedUserDataStore;
     private String sessionId;
+    private List<GameRecord> gameRecords = new ArrayList<>();
 
     private LoggedUserDataStore() {}
 
@@ -39,6 +44,19 @@ public class LoggedUserDataStore {
 
     public static String getSessionId() {
         return loggedUserDataStore.sessionId;
+    }
+
+    public static List<GameRecord> getGameRecords() {
+        if(loggedUserDataStore == null) {return null;}
+        return loggedUserDataStore.gameRecords;
+    }
+
+    public static void setGameRecords(List<GameRecord> gameRecords) {
+        if(loggedUserDataStore == null) {
+            Log.e(TAG, "There's no logged in user in the app");
+        } else {
+            loggedUserDataStore.gameRecords = gameRecords;
+        }
     }
 
     @Override
