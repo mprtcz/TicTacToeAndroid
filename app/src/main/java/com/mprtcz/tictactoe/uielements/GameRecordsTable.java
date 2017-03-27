@@ -15,7 +15,6 @@ import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.game.model.GameMove;
 import com.mprtcz.tictactoe.game.model.GameRecord;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,14 +38,10 @@ public class GameRecordsTable {
 
     private TableRow getTableRowOfRecord(GameRecord gameRecord) {
         TableRow tableRow = getRecordTableRow();
-
-        List<View> views = new LinkedList<>();
-        views.add(getTextView(gameRecord.getPlayerOne().getNickname()));
-        views.add(getTextView(gameRecord.getPlayerTwo().getNickname()));
-        views.add(getTextView(gameRecord.getDateTime().getFormattedDate()));
-        views.add(getButton(activity.getString(R.string.show_moves_button), getGameMovesButtonListener(gameRecord)));
-        addViewsToRow(tableRow, views);
-
+        tableRow.addView(getTextView(gameRecord.getPlayerOne().getNickname()));
+        tableRow.addView(getTextView(gameRecord.getPlayerTwo().getNickname()));
+        tableRow.addView(getTextView(gameRecord.getDateTime().getFormattedDate()));
+        tableRow.addView(getButton(activity.getString(R.string.show_moves_button), getGameMovesButtonListener(gameRecord)));
         return tableRow;
     }
 
@@ -70,22 +65,11 @@ public class GameRecordsTable {
 
     private TableRow getRecordTableHeaders() {
         TableRow tableRow = getRecordTableRow();
-
-        List<View> views = new LinkedList<>();
-        views.add(getTextView(activity.getString(R.string.table_row_first_player_header)));
-        views.add(getTextView(activity.getString(R.string.table_row_second_player_header)));
-        views.add(getTextView(activity.getString(R.string.table_row_date_header)));
-        views.add(getTextView(activity.getString(R.string.table_row_action)));
-        addViewsToRow(tableRow, views);
-
+        tableRow.addView(getTextView(activity.getString(R.string.table_row_first_player_header)));
+        tableRow.addView(getTextView(activity.getString(R.string.table_row_second_player_header)));
+        tableRow.addView(getTextView(activity.getString(R.string.table_row_date_header)));
+        tableRow.addView(getTextView(activity.getString(R.string.table_row_action)));
         return tableRow;
-    }
-
-    private void addViewsToRow(TableRow row, List<View> views) {
-        for (View v :
-                views) {
-            row.addView(v);
-        }
     }
 
     private Button getButton(String text, View.OnClickListener listener) {
@@ -143,25 +127,17 @@ public class GameRecordsTable {
 
     private TableRow getGameMoveTableRow(GameMove gameMove) {
         TableRow tableRow = getMoveTableRow();
-
-        List<View> views = new LinkedList<>();
-        views.add(getTextView(gameMove.getField()));
-        views.add(getTextView(gameMove.getSymbol()));
-        views.add(getTextView(gameMove.getDateTime().getFormattedTime()));
-        addViewsToRow(tableRow, views);
-
+        tableRow.addView(getTextView(gameMove.getField()));
+        tableRow.addView(getTextView(gameMove.getSymbol()));
+        tableRow.addView(getTextView(gameMove.getDateTime().getFormattedTime()));
         return tableRow;
     }
 
     private TableRow getGameMoveTableHeaders() {
         TableRow tableRow = getMoveTableRow();
-
-        List<View> views = new LinkedList<>();
-        views.add(getTextView(activity.getString(R.string.field_header_game_move)));
-        views.add(getTextView(activity.getString(R.string.symbol_header_game_move)));
-        views.add(getTextView(activity.getString(R.string.time_header_game_move)));
-        addViewsToRow(tableRow, views);
-
+        tableRow.addView(getTextView(activity.getString(R.string.field_header_game_move)));
+        tableRow.addView(getTextView(activity.getString(R.string.symbol_header_game_move)));
+        tableRow.addView(getTextView(activity.getString(R.string.time_header_game_move)));
         return tableRow;
     }
 
