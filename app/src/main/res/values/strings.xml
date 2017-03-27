@@ -31,4 +31,7 @@
     <string name="table_row_second_player_header">Second Player</string>
     <string name="table_row_date_header">Date</string>
     <string name="table_row_action">Action</string>
+    <string name="field_header_game_move">Field</string>
+    <string name="symbol_header_game_move">Symbol</string>
+    <string name="time_header_game_move">Time</string>
 </resources>

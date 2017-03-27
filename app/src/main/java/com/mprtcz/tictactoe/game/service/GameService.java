@@ -2,14 +2,11 @@ package com.mprtcz.tictactoe.game.service;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.game.model.GameRecord;
+import com.mprtcz.tictactoe.uielements.GameRecordsTable;
 import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 
 import java.util.List;
@@ -55,49 +52,7 @@ public class GameService {
     }
 
     public void populateTableRows(Activity activity, TableLayout tableLayout, List<GameRecord> gameRecords) {
-        tableLayout.addView(getTableHeaders(activity));
-        for (GameRecord gameRecord :
-                gameRecords) {
-            tableLayout.addView(getTableRow(activity, gameRecord));
-        }
-    }
-
-    private TableRow getTableRow(Activity activity, GameRecord gameRecord) {
-        TableRow tableRow = new TableRow(activity);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-        tableRow.setLayoutParams(lp);
-        TextView firstPlayerTextView = new TextView(activity);
-        firstPlayerTextView.setText(gameRecord.getPlayerOne().getNickname());
-        TextView secondPlayerTextView = new TextView(activity);
-        secondPlayerTextView.setText(gameRecord.getPlayerTwo().getNickname());
-        TextView dateTextView = new TextView(activity);
-        dateTextView.setText(gameRecord.getDateTime().getFormattedDate());
-        Button actionButton = new Button(activity);
-        actionButton.setText(R.string.show_moves_button);
-        tableRow.addView(firstPlayerTextView);
-        tableRow.addView(secondPlayerTextView);
-        tableRow.addView(dateTextView);
-        tableRow.addView(actionButton);
-        return tableRow;
-    }
-
-    private TableRow getTableHeaders(Activity activity) {
-        TableRow tableRow = new TableRow(activity);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-        tableRow.setLayoutParams(lp);
-        tableRow.setLayoutParams(lp);
-        TextView firstPlayerTextView = new TextView(activity);
-        firstPlayerTextView.setText(R.string.table_row_first_player_header);
-        TextView secondPlayerTextView = new TextView(activity);
-        secondPlayerTextView.setText(R.string.table_row_second_player_header);
-        TextView dateTextView = new TextView(activity);
-        dateTextView.setText(R.string.table_row_date_header);
-        TextView actionTextView = new TextView(activity);
-        actionTextView.setText(R.string.table_row_action);
-        tableRow.addView(firstPlayerTextView);
-        tableRow.addView(secondPlayerTextView);
-        tableRow.addView(dateTextView);
-        tableRow.addView(actionTextView);
-        return tableRow;
+        GameRecordsTable gameRecordsTable = new GameRecordsTable(activity);
+        gameRecordsTable.populateTableRows(tableLayout, gameRecords);
     }
 }
