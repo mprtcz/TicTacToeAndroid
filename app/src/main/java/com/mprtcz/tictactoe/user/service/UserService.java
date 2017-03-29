@@ -6,9 +6,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.mprtcz.tictactoe.activities.LoginActivity;
+import com.mprtcz.tictactoe.activities.RegisterUser;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
-import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
+import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.User;
+import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 
 import java.util.List;
 
@@ -39,7 +41,8 @@ public class UserService {
         this.asyncService.getUsersFromServerAsync(getUsersCallback(userArrayAdapter, summaryPresenter));
     }
 
-    private Callback<List<String>> getUsersCallback(final ArrayAdapter<String> userArrayAdapter, final SummaryPresenter summaryPresenter) {
+    private Callback<List<String>> getUsersCallback(final ArrayAdapter<String> userArrayAdapter,
+                                                    final SummaryPresenter summaryPresenter) {
         return new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
@@ -105,6 +108,29 @@ public class UserService {
         String joinedData = name + ":" + password;
         byte[] data = joinedData.getBytes();
         return Base64.encode(data, Base64.DEFAULT);
+    }
+
+    public void registerNewUserOnServer(RegisterUser registerUserActivity, NewUser newUser) {
+        this.asyncService.registerNewUserOnServer(getUserRegistrationCallback(registerUserActivity), newUser);
+    }
+
+    private Callback<String> getUserRegistrationCallback(final RegisterUser registerUserActivity) {
+        return new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.code() == 200) {
+                    registerUserActivity.successfulRegistrationRedirect();
+                } else {
+                    registerUserActivity.showBackendErrorResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "onFailure: REGISTRATION ERROR " +t.toString());
+            }
+        };
+
     }
 
     private class SummaryPresenter {

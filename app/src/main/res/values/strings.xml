@@ -34,4 +34,5 @@
     <string name="field_header_game_move">Field</string>
     <string name="symbol_header_game_move">Symbol</string>
     <string name="time_header_game_move">Time</string>
+    <string name="registration_field_empty_text">Field cannot be empty</string>
 </resources>

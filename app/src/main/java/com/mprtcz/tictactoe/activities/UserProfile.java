@@ -30,12 +30,9 @@ public class UserProfile extends AppCompatActivity {
         TextView nameTextView = (TextView) findViewById(R.id.userProfileName);
         TextView nicknameTextView = (TextView) findViewById(R.id.userProfileNickname);
         TextView emailTextView = (TextView) findViewById(R.id.userProfileEmail);
-        String userNameString = getString(R.string.user_profile_name_textview) +" " + loggedInUser.getSsoId();
-        String userNicknameString = getString(R.string.user_profile_nickname_textview) +" " +  loggedInUser.getNickname();
-        String userEmailString = getString(R.string.user_profile_email_textview) +" " +  loggedInUser.getEmail();
-        nameTextView.setText(userNameString);
-        nicknameTextView.setText(userNicknameString);
-        emailTextView.setText(userEmailString);
+        nameTextView.setText(getString(R.string.user_profile_name_textview) +" " + loggedInUser.getSsoId());
+        nicknameTextView.setText(getString(R.string.user_profile_nickname_textview) +" " +  loggedInUser.getNickname());
+        emailTextView.setText(getString(R.string.user_profile_email_textview) +" " +  loggedInUser.getEmail());
     }
 
     public void onShowHistoryButtonClicked(View view) {

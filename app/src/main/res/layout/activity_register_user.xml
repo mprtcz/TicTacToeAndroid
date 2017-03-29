@@ -64,8 +64,16 @@
 
         <Button
             android:id="@+id/registerUserButton"
+            android:onClick="onRegisterUserButtonClicked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register_user_button" />
+
+        <TextView
+            android:id="@+id/registrationStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
     </LinearLayout>
 </ScrollView>

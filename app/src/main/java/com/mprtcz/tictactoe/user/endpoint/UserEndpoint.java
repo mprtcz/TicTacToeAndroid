@@ -1,5 +1,6 @@
 package com.mprtcz.tictactoe.user.endpoint;
 
+import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.User;
 
 import java.util.List;
@@ -25,11 +26,12 @@ public interface UserEndpoint {
     Call<String> deleteUser();
 
     @POST("/api/users/add")
-    Call<String> registerNewUser(@Body User user);
+    Call<String> registerNewUser(@Body NewUser newUser);
 
     @PATCH("/api/users/profile")
     Call<String> updateUser(@Body User user);
 
     @GET("/api/users/profile")
     Call<User> authenticateUser(@Header("Authorization") String authorization);
+
 }

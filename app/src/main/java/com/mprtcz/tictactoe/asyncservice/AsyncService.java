@@ -3,6 +3,7 @@ package com.mprtcz.tictactoe.asyncservice;
 import com.mprtcz.tictactoe.game.endpoint.GameEndpoint;
 import com.mprtcz.tictactoe.game.model.GameRecord;
 import com.mprtcz.tictactoe.user.endpoint.UserEndpoint;
+import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.User;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class AsyncService {
     }
 
     public void authenticateUser(Callback<User> callback, String header) {
-        UserEndpoint taskEndpoint = RetrofitUtils.getUserEndpointRetrofit();
-        Call<User> activitiesCall = taskEndpoint.authenticateUser(header);
+        UserEndpoint userEndpoint = RetrofitUtils.getUserEndpointRetrofit();
+        Call<User> activitiesCall = userEndpoint.authenticateUser(header);
         activitiesCall.enqueue(callback);
     }
 
@@ -32,5 +33,12 @@ public class AsyncService {
         GameEndpoint taskEndpoint = RetrofitUtils.getGameEndpointRetrofit();
         Call<List<GameRecord>> activitiesCall = taskEndpoint.getUserHistory(username, sessionId);
         activitiesCall.enqueue(callback);
+    }
+
+    public void registerNewUserOnServer(Callback<String> callback, NewUser newUser) {
+        UserEndpoint userEndpoint = RetrofitUtils.getUserEndpointRetrofit();
+        userEndpoint.registerNewUser(newUser);
+        Call<String> registerNewUserCall = userEndpoint.registerNewUser(newUser);
+        registerNewUserCall.enqueue(callback);
     }
 }
