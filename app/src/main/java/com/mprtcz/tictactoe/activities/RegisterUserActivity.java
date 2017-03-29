@@ -16,6 +16,8 @@ import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.UserRegistrationError;
 import com.mprtcz.tictactoe.user.service.UserService;
 
+import java.util.Arrays;
+
 public class RegisterUserActivity extends AppCompatActivity implements UserRegister {
     private static final String TAG = "RegisterUserActivity";
     EditText usernameTextEdit;
@@ -96,10 +98,11 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
 
     @Override
     public void showBackendErrorResponse(UserRegistrationError[] errors) {
+        Log.i(TAG, "showBackendErrorResponse: errors: " + Arrays.toString(errors));
         for (UserRegistrationError error : errors) {
             switch (error.getProperty()) {
-                case "SsoId" : {this.usernameTextEdit.setError(error.getMessage());}
-                case "Email" : {this.emailTextEdit.setError(error.getMessage());}
+                case "SsoId" : this.usernameTextEdit.setError(error.getMessage()); break;
+                case "Email" : this.emailTextEdit.setError(error.getMessage()); break;
                 default: {
                     Log.i(TAG, "showBackendErrorResponse: unrecognized case for error property: " +error.getProperty());
                 }
