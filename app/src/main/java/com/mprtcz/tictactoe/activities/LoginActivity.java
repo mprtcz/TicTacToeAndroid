@@ -36,7 +36,9 @@ public class LoginActivity extends AppCompatActivity implements UserLogin {
     public void onLoginButtonConfirmClicked(View view) {
         if (validateEnteredUserData()) {
             UserService userService = new UserService(new AsyncService());
-            userService.authenticateUser(this);
+            userService.authenticateUser(this,
+                    this.loginUsernameEditText.getText().toString(),
+                    this.loginPasswordEditText.getText().toString());
         }
     }
 

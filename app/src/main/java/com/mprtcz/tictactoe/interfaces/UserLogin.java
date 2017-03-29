@@ -8,8 +8,4 @@ public interface UserLogin {
     void redirectSuccessfulLogin();
 
     void setBadCredentialsErrorMessage();
-
-    String getLoginUsername();
-
-    String getLoginPassword();
 }

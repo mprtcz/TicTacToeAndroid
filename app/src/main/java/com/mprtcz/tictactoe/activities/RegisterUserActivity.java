@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
+import com.mprtcz.tictactoe.interfaces.UserLogin;
 import com.mprtcz.tictactoe.interfaces.UserRegister;
 import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.UserRegistrationError;
@@ -18,7 +19,7 @@ import com.mprtcz.tictactoe.user.service.UserService;
 
 import java.util.Arrays;
 
-public class RegisterUserActivity extends AppCompatActivity implements UserRegister {
+public class RegisterUserActivity extends AppCompatActivity implements UserRegister, UserLogin {
     private static final String TAG = "RegisterUserActivity";
     EditText usernameTextEdit;
     EditText nicknameTextEdit;
@@ -27,6 +28,7 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
     EditText emailTextEdit;
     Button confirmButton;
     TextView registrationStatusTextView;
+    UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,7 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
         newUser.setNickname(this.nicknameTextEdit.getText().toString());
         newUser.setEmail(this.emailTextEdit.getText().toString());
         newUser.setPassword(this.passwordTextEdit.getText().toString());
-        UserService userService = new UserService(new AsyncService());
-        userService.registerNewUserOnServer(this, newUser);
+        UserService.getInstance(new AsyncService()).registerNewUserOnServer(this, newUser);
     }
 
     private boolean isDataValid() {
@@ -91,9 +92,8 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
     }
 
     @Override
-    public void successfulRegistrationRedirect() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    public void successfulRegistrationRedirect(NewUser newUser) {
+        UserService.getInstance(new AsyncService()).authenticateUser(this, newUser.getSsoId(), newUser.getPassword());
     }
 
     @Override
@@ -108,5 +108,16 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
                 }
             }
         }
+    }
+
+    @Override
+    public void redirectSuccessfulLogin() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void setBadCredentialsErrorMessage() {
+        Log.e(TAG, "setBadCredentialsErrorMessage: Bad login credentials");
     }
 }

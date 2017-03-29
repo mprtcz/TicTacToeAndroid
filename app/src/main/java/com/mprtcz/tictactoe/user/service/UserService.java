@@ -33,6 +33,7 @@ public class UserService {
     private static final String TAG = "UserService";
     private AsyncService asyncService;
     private SummaryPresenter summaryPresenter;
+    private static UserService userService;
 
     public UserService(AsyncService asyncService) {
         this.asyncService = asyncService;
@@ -78,10 +79,16 @@ public class UserService {
                     if(headers.names().contains("Set-Cookie")) {
                         LoggedUserDataStore.setLoggedUserAndSession(response.body(),
                                 getSessionIdString(headers.get("Set-Cookie")));
+                    } else {
+                        Log.i(TAG, "onResponse: No Set-Cookie response");
                     }
-                    userLogin.redirectSuccessfulLogin();
+                    if(userLogin != null) {
+                        userLogin.redirectSuccessfulLogin();
+                    }
                 } else {
-                    userLogin.setBadCredentialsErrorMessage();
+                    if(userLogin != null) {
+                        userLogin.setBadCredentialsErrorMessage();
+                    }
                 }
             }
 
@@ -103,10 +110,10 @@ public class UserService {
         return "";
     }
 
-    public void authenticateUser(UserLogin userLogin) {
+    public void authenticateUser(UserLogin userLogin, String username, String password) {
         String headerData = "Basic " +new String(encodeUserAndPassword(
-                userLogin.getLoginUsername(),
-                userLogin.getLoginPassword()));
+                username,
+                password));
         this.asyncService.authenticateUser(getAuthenticationCallback(userLogin), headerData.replace("\n", ""));
     }
 
@@ -117,15 +124,15 @@ public class UserService {
     }
 
     public void registerNewUserOnServer(UserRegister userRegister, NewUser newUser) {
-        this.asyncService.registerNewUserOnServer(getUserRegistrationCallback(userRegister), newUser);
+        this.asyncService.registerNewUserOnServer(getUserRegistrationCallback(userRegister, newUser), newUser);
     }
 
-    private Callback<Void> getUserRegistrationCallback(final UserRegister userRegister) {
+    private Callback<Void> getUserRegistrationCallback(final UserRegister userRegister, final NewUser newUser) {
         return new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.code() == 200) {
-                    userRegister.successfulRegistrationRedirect();
+                    userRegister.successfulRegistrationRedirect(newUser);
                 } else {
                     try {
                         Converter<ResponseBody, UserRegistrationError[]> converter =
@@ -177,5 +184,12 @@ public class UserService {
                     +"\nOnline games: " + this.onlineGamesNumber;
 
         }
+    }
+
+    public static UserService getInstance(AsyncService asyncService) {
+        if(userService == null) {
+            userService = new UserService(asyncService);
+        }
+        return userService;
     }
 }

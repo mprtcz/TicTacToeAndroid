@@ -1,5 +1,6 @@
 package com.mprtcz.tictactoe.interfaces;
 
+import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.UserRegistrationError;
 
 /**
@@ -7,7 +8,7 @@ import com.mprtcz.tictactoe.user.model.UserRegistrationError;
  */
 
 public interface UserRegister {
-    void successfulRegistrationRedirect();
+    void successfulRegistrationRedirect(NewUser newUser);
 
     void showBackendErrorResponse(UserRegistrationError[] userRegistrationErrors);
 }
