@@ -35,4 +35,8 @@
     <string name="symbol_header_game_move">Symbol</string>
     <string name="time_header_game_move">Time</string>
     <string name="registration_field_empty_text">Field cannot be empty</string>
+    <string name="start_join_game_button">Start or join a game</string>
+    <string name="start_or_join_game_textview">Start or Join a Game</string>
+    <string name="start_game_button">START</string>
+    <string name="join_game_button_text">JOIN</string>
 </resources>

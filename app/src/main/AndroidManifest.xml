@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.RegisterUserActivity" />
-        <activity android:name=".activities.UserProfileActivity"></activity>
+        <activity android:name=".activities.UserProfileActivity" />
+        <activity android:name=".activities.GamesOverview"></activity>
     </application>
 
 </manifest>

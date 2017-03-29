@@ -53,7 +53,7 @@ public class UserService {
         return new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     List<String> users = response.body();
                     summaryPresenter.setOnlineUsersNumber(users.size());
                     Log.d(TAG, "users: " + users.toString());
@@ -65,7 +65,7 @@ public class UserService {
 
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
-                Log.e(TAG, "Failure to call users: " + call.toString() +" with throwable " + t.toString());
+                Log.e(TAG, "Failure to call users: " + call.toString() + " with throwable " + t.toString());
             }
         };
     }
@@ -74,19 +74,19 @@ public class UserService {
         return new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     Headers headers = response.headers();
-                    if(headers.names().contains("Set-Cookie")) {
+                    if (headers.names().contains("Set-Cookie")) {
                         LoggedUserDataStore.setLoggedUserAndSession(response.body(),
                                 getSessionIdString(headers.get("Set-Cookie")));
                     } else {
                         Log.i(TAG, "onResponse: No Set-Cookie response");
                     }
-                    if(userLogin != null) {
+                    if (userLogin != null) {
                         userLogin.redirectSuccessfulLogin();
                     }
                 } else {
-                    if(userLogin != null) {
+                    if (userLogin != null) {
                         userLogin.setBadCredentialsErrorMessage();
                     }
                 }
@@ -103,7 +103,7 @@ public class UserService {
         String[] cookieParts = cookieString.split(";");
         for (String s :
                 cookieParts) {
-            if(s. contains("JSESSIONID=")) {
+            if (s.contains("JSESSIONID=")) {
                 return s;
             }
         }
@@ -111,7 +111,7 @@ public class UserService {
     }
 
     public void authenticateUser(UserLogin userLogin, String username, String password) {
-        String headerData = "Basic " +new String(encodeUserAndPassword(
+        String headerData = "Basic " + new String(encodeUserAndPassword(
                 username,
                 password));
         this.asyncService.authenticateUser(getAuthenticationCallback(userLogin), headerData.replace("\n", ""));
@@ -131,12 +131,12 @@ public class UserService {
         return new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     userRegister.successfulRegistrationRedirect(newUser);
                 } else {
                     try {
                         Converter<ResponseBody, UserRegistrationError[]> converter =
-                        asyncService.getRetrofit().responseBodyConverter(UserRegistrationError[].class, new Annotation[0]);
+                                asyncService.getRetrofit().responseBodyConverter(UserRegistrationError[].class, new Annotation[0]);
                         UserRegistrationError[] errors = converter.convert(response.errorBody());
                         userRegister.showBackendErrorResponse(errors);
 
@@ -150,7 +150,7 @@ public class UserService {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e(TAG, "onFailure: REGISTRATION ERROR " +t.toString());
+                Log.e(TAG, "onFailure: REGISTRATION ERROR " + t.toString());
             }
         };
 
@@ -181,13 +181,13 @@ public class UserService {
 
         private String composeText() {
             return "Online users: " + this.onlineUsersNumber
-                    +"\nOnline games: " + this.onlineGamesNumber;
+                    + "\nOnline games: " + this.onlineGamesNumber;
 
         }
     }
 
     public static UserService getInstance(AsyncService asyncService) {
-        if(userService == null) {
+        if (userService == null) {
             userService = new UserService(asyncService);
         }
         return userService;

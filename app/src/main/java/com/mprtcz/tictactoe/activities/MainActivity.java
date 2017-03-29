@@ -77,4 +77,9 @@ public class MainActivity extends AppCompatActivity {
             userNamesArrayAdapter.addAll(state.getStringArrayList("users"));
         }
     }
+
+    public void onGamesOverviewButtonClicked(View view) {
+        Intent intent = new Intent(this, GamesOverview.class);
+        startActivity(intent);
+    }
 }
