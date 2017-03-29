@@ -12,7 +12,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="15dp"
-        tools:context="com.mprtcz.tictactoe.activities.RegisterUser">
+        tools:context="com.mprtcz.tictactoe.activities.RegisterUserActivity">
 
         <TextView
             android:id="@+id/registerNewUserTextView"

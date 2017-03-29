@@ -4,7 +4,7 @@
     android:id="@+id/activity_user_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mprtcz.tictactoe.activities.UserProfile">
+    tools:context="com.mprtcz.tictactoe.activities.UserProfileActivity">
 
     <include
         android:id="@+id/my_toolbar"

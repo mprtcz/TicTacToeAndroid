@@ -10,6 +10,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Retrofit;
 
 /**
  * Created by Azet on 2017-03-23.
@@ -35,10 +36,14 @@ public class AsyncService {
         activitiesCall.enqueue(callback);
     }
 
-    public void registerNewUserOnServer(Callback<String> callback, NewUser newUser) {
+    public void registerNewUserOnServer(Callback<Void> callback, NewUser newUser) {
         UserEndpoint userEndpoint = RetrofitUtils.getUserEndpointRetrofit();
         userEndpoint.registerNewUser(newUser);
-        Call<String> registerNewUserCall = userEndpoint.registerNewUser(newUser);
+        Call<Void> registerNewUserCall = userEndpoint.registerNewUser(newUser);
         registerNewUserCall.enqueue(callback);
+    }
+
+    public Retrofit getRetrofit() {
+        return RetrofitUtils.getInstance();
     }
 }

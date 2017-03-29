@@ -8,9 +8,10 @@ import android.widget.EditText;
 
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
+import com.mprtcz.tictactoe.interfaces.UserLogin;
 import com.mprtcz.tictactoe.user.service.UserService;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements UserLogin {
 
     EditText loginUsernameEditText;
     EditText loginPasswordEditText;
@@ -28,12 +29,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginRegisterLinkTextViewClicked(View view) {
-        Intent intent = new Intent(this, RegisterUser.class);
+        Intent intent = new Intent(this, RegisterUserActivity.class);
         startActivity(intent);
     }
 
     public void onLoginButtonConfirmClicked(View view) {
-        if(validateEnteredUserData()) {
+        if (validateEnteredUserData()) {
             UserService userService = new UserService(new AsyncService());
             userService.authenticateUser(this);
         }
@@ -41,11 +42,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateEnteredUserData() {
         boolean flag = true;
-        if(this.loginUsernameEditText.getText().equals("")) {
+        if (this.loginUsernameEditText.getText().equals("")) {
             this.loginUsernameEditText.setError(getString(R.string.login_name_empty));
-            flag= false;
+            flag = false;
         }
-        if(this.loginPasswordEditText.getText().equals("")) {
+        if (this.loginPasswordEditText.getText().equals("")) {
             flag = false;
             this.loginPasswordEditText.setError(getString(R.string.login_password_empty));
         }

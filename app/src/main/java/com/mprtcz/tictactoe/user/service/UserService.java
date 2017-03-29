@@ -5,18 +5,24 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.mprtcz.tictactoe.activities.LoginActivity;
-import com.mprtcz.tictactoe.activities.RegisterUser;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
+import com.mprtcz.tictactoe.interfaces.UserLogin;
+import com.mprtcz.tictactoe.interfaces.UserRegister;
 import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.User;
+import com.mprtcz.tictactoe.user.model.UserRegistrationError;
 import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Headers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Response;
 
 /**
@@ -63,7 +69,7 @@ public class UserService {
         };
     }
 
-    private Callback<User> getAuthenticationCallback(final LoginActivity loginActivity) {
+    private Callback<User> getAuthenticationCallback(final UserLogin userLogin) {
         return new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -73,9 +79,9 @@ public class UserService {
                         LoggedUserDataStore.setLoggedUserAndSession(response.body(),
                                 getSessionIdString(headers.get("Set-Cookie")));
                     }
-                    loginActivity.redirectSuccessfulLogin();
+                    userLogin.redirectSuccessfulLogin();
                 } else {
-                    loginActivity.setBadCredentialsErrorMessage();
+                    userLogin.setBadCredentialsErrorMessage();
                 }
             }
 
@@ -97,11 +103,11 @@ public class UserService {
         return "";
     }
 
-    public void authenticateUser(LoginActivity loginActivity) {
+    public void authenticateUser(UserLogin userLogin) {
         String headerData = "Basic " +new String(encodeUserAndPassword(
-                loginActivity.getLoginUsername(),
-                loginActivity.getLoginPassword()));
-        this.asyncService.authenticateUser(getAuthenticationCallback(loginActivity), headerData.replace("\n", ""));
+                userLogin.getLoginUsername(),
+                userLogin.getLoginPassword()));
+        this.asyncService.authenticateUser(getAuthenticationCallback(userLogin), headerData.replace("\n", ""));
     }
 
     private byte[] encodeUserAndPassword(String name, String password) {
@@ -110,23 +116,33 @@ public class UserService {
         return Base64.encode(data, Base64.DEFAULT);
     }
 
-    public void registerNewUserOnServer(RegisterUser registerUserActivity, NewUser newUser) {
-        this.asyncService.registerNewUserOnServer(getUserRegistrationCallback(registerUserActivity), newUser);
+    public void registerNewUserOnServer(UserRegister userRegister, NewUser newUser) {
+        this.asyncService.registerNewUserOnServer(getUserRegistrationCallback(userRegister), newUser);
     }
 
-    private Callback<String> getUserRegistrationCallback(final RegisterUser registerUserActivity) {
-        return new Callback<String>() {
+    private Callback<Void> getUserRegistrationCallback(final UserRegister userRegister) {
+        return new Callback<Void>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.code() == 200) {
-                    registerUserActivity.successfulRegistrationRedirect();
+                    userRegister.successfulRegistrationRedirect();
                 } else {
-                    registerUserActivity.showBackendErrorResponse(response.body());
+                    try {
+                        Converter<ResponseBody, UserRegistrationError[]> converter =
+                        asyncService.getRetrofit().responseBodyConverter(UserRegistrationError[].class, new Annotation[0]);
+                        UserRegistrationError[] errors = converter.convert(response.errorBody());
+                        userRegister.showBackendErrorResponse(errors);
+
+                        Log.i(TAG, "onResponse: parsed errors = " + Arrays.toString(errors));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.e(TAG, "onFailure: REGISTRATION ERROR " +t.toString());
             }
         };

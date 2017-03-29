@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.activities.LoginActivity;
-import com.mprtcz.tictactoe.activities.RegisterUser;
-import com.mprtcz.tictactoe.activities.UserProfile;
+import com.mprtcz.tictactoe.activities.RegisterUserActivity;
+import com.mprtcz.tictactoe.activities.UserProfileActivity;
 
 /**
  * Created by Azet on 2017-03-24.
@@ -26,7 +26,7 @@ public class ToolbarHelper {
             firstIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity, UserProfile.class);
+                    Intent intent = new Intent(activity, UserProfileActivity.class);
                     activity.startActivity(intent);
                 }
             });
@@ -44,7 +44,7 @@ public class ToolbarHelper {
             secondIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity, RegisterUser.class);
+                    Intent intent = new Intent(activity, RegisterUserActivity.class);
                     activity.startActivity(intent);
                 }
             });

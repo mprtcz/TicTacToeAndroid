@@ -13,8 +13,8 @@ import com.mprtcz.tictactoe.user.model.User;
 import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 import com.mprtcz.tictactoe.utils.ToolbarHelper;
 
-public class UserProfile extends AppCompatActivity {
-    private static final String TAG = "UserProfile";
+public class UserProfileActivity extends AppCompatActivity {
+    private static final String TAG = "UserProfileActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

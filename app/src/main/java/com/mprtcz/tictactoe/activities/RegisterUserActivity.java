@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
+import com.mprtcz.tictactoe.interfaces.UserRegister;
 import com.mprtcz.tictactoe.user.model.NewUser;
+import com.mprtcz.tictactoe.user.model.UserRegistrationError;
 import com.mprtcz.tictactoe.user.service.UserService;
 
-public class RegisterUser extends AppCompatActivity {
-    private static final String TAG = "RegisterUser";
+public class RegisterUserActivity extends AppCompatActivity implements UserRegister {
+    private static final String TAG = "RegisterUserActivity";
     EditText usernameTextEdit;
     EditText nicknameTextEdit;
     EditText passwordTextEdit;
@@ -80,22 +82,28 @@ public class RegisterUser extends AppCompatActivity {
     private boolean isEditTextFilled(EditText editText) {
         if(editText.getText().toString().isEmpty()) {
             Log.i(TAG, "isEditTextFilled: " +editText.getText().toString() + " appears to be empty");
-            displayEmptyEditWarning(editText);
+            editText.setError(getString(R.string.registration_field_empty_text));
             return false;
         }
         return true;
     }
 
-    private void displayEmptyEditWarning(EditText editText) {
-        editText.setError(getString(R.string.registration_field_empty_text));
-    }
-
+    @Override
     public void successfulRegistrationRedirect() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    public void showBackendErrorResponse(String errorMessage) {
-        this.registrationStatusTextView.setText(errorMessage);
+    @Override
+    public void showBackendErrorResponse(UserRegistrationError[] errors) {
+        for (UserRegistrationError error : errors) {
+            switch (error.getProperty()) {
+                case "SsoId" : {this.usernameTextEdit.setError(error.getMessage());}
+                case "Email" : {this.emailTextEdit.setError(error.getMessage());}
+                default: {
+                    Log.i(TAG, "showBackendErrorResponse: unrecognized case for error property: " +error.getProperty());
+                }
+            }
+        }
     }
 }

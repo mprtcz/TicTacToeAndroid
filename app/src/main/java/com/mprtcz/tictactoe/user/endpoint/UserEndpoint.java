@@ -26,7 +26,7 @@ public interface UserEndpoint {
     Call<String> deleteUser();
 
     @POST("/api/users/add")
-    Call<String> registerNewUser(@Body NewUser newUser);
+    Call<Void> registerNewUser(@Body NewUser newUser);
 
     @PATCH("/api/users/profile")
     Call<String> updateUser(@Body User user);
