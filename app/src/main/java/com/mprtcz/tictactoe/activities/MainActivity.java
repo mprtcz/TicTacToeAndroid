@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.user.service.UserService;
+import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 import com.mprtcz.tictactoe.utils.ToolbarHelper;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(ToolbarHelper.chooseToolbarIcons(this));
         getUIElementsReferences();
         getFieldsReferences();
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getUsersFromServer();
         }
     }
@@ -73,13 +74,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
-        if(state.getStringArrayList("users") != null) {
+        if (state.getStringArrayList("users") != null) {
             userNamesArrayAdapter.addAll(state.getStringArrayList("users"));
         }
     }
 
     public void onGamesOverviewButtonClicked(View view) {
-        Intent intent = new Intent(this, GamesOverview.class);
+        Intent intent;
+        if (LoggedUserDataStore.isUserLoggedIn()) {
+            intent = new Intent(this, GamesOverview.class);
+        } else {
+            intent = new Intent(this, LoginActivity.class);
+        }
         startActivity(intent);
     }
 }

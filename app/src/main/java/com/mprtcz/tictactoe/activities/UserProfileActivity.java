@@ -39,7 +39,7 @@ public class UserProfileActivity extends AppCompatActivity {
         GameService gameService = new GameService(new AsyncService());
         TableLayout tableLayout = (TableLayout) findViewById(R.id.gamesHistoryTableLayout);
         if(LoggedUserDataStore.getGameRecords() != null && !LoggedUserDataStore.getGameRecords().isEmpty()) {
-            gameService.populateTableRows(this, tableLayout, LoggedUserDataStore.getGameRecords());
+            gameService.populateGameRecordsTableRows(this, tableLayout, LoggedUserDataStore.getGameRecords());
         } else {
             gameService.getGamesHistoryFromServer(this, tableLayout);
         }

@@ -39,4 +39,7 @@
     <string name="start_or_join_game_textview">Start or Join a Game</string>
     <string name="start_game_button">START</string>
     <string name="join_game_button_text">JOIN</string>
+    <string name="join_specific_game_button_text">JOIN</string>
+    <string name="game_host_table_header">Game Host</string>
+    <string name="second_player_table_header">Second Player</string>
 </resources>
