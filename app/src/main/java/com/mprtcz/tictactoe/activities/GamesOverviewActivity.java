@@ -1,5 +1,6 @@
 package com.mprtcz.tictactoe.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.game.service.GameService;
 
-public class GamesOverview extends AppCompatActivity {
+public class GamesOverviewActivity extends AppCompatActivity {
     String[] gameNames = new String[] {"TicTacToe"};
 
     @Override
@@ -39,8 +40,7 @@ public class GamesOverview extends AppCompatActivity {
         placeholderTextView.setLayoutParams(new TableLayout.LayoutParams(
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT, 1f));
-        Button startGameButton = new Button(this);
-        startGameButton.setText(R.string.start_game_button);
+        Button startGameButton = getStartButtonWithCallback();
         tableRow.addView(startGameButton);
         Button joinButton = getJoinButtonWithCallback();
         tableRow.addView(joinButton);
@@ -59,13 +59,27 @@ public class GamesOverview extends AppCompatActivity {
         return joinButton;
     }
 
+    private Button getStartButtonWithCallback() {
+        Button startButton = new Button(this);
+        startButton.setText(R.string.start_game_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewTicTacToeGame();
+            }
+        });
+        return startButton;
+
+    }
+
+    private void startNewTicTacToeGame() {
+        Intent intent = new Intent(this, TicTacToeActivity.class);
+        startActivity(intent);
+    }
+
     private void getActiveGamesFromServer() {
         GameService gameService = GameService.getInstance(new AsyncService());
         TableLayout existingGamesTableLayout = (TableLayout) findViewById(R.id.existingGamesTableLayout);
         gameService.getExistingGamesFromServer(existingGamesTableLayout);
     }
-
-
-
-
 }

@@ -1,8 +1,9 @@
 package com.mprtcz.tictactoe.asyncservice;
 
 import com.mprtcz.tictactoe.game.endpoint.GameEndpoint;
+import com.mprtcz.tictactoe.game.endpoint.TicTacToeEndpoint;
 import com.mprtcz.tictactoe.game.model.GameRecord;
-import com.mprtcz.tictactoe.game.model.TicTacToeGame;
+import com.mprtcz.tictactoe.game.model.TicTacToeGameDTO;
 import com.mprtcz.tictactoe.user.endpoint.UserEndpoint;
 import com.mprtcz.tictactoe.user.model.NewUser;
 import com.mprtcz.tictactoe.user.model.User;
@@ -44,13 +45,32 @@ public class AsyncService {
         userGameHistoryCall.enqueue(callback);
     }
 
-    public void getActiveTTTGames(Callback<List<TicTacToeGame>> callback, String sessionId) {
+    public void getActiveTTTGames(Callback<List<TicTacToeGameDTO>> callback, String sessionId) {
         GameEndpoint gameEndpoint = RetrofitUtils.getGameEndpointRetrofit();
-        Call<List<TicTacToeGame>> gamesCall = gameEndpoint.getTicTacToeGames(sessionId);
+        Call<List<TicTacToeGameDTO>> gamesCall = gameEndpoint.getTicTacToeGames(sessionId);
         gamesCall.enqueue(callback);
+    }
+
+    public void createTicTacToeGame(Callback<String> callback, String sessionId) {
+        TicTacToeEndpoint ticTacToeEndpoint = RetrofitUtils.getTicTacToeEndpointRetrofit();
+        Call<String> createTicTacToeCall = ticTacToeEndpoint.createTicTacToeGame(sessionId);
+        createTicTacToeCall.enqueue(callback);
     }
 
     public Retrofit getRetrofit() {
         return RetrofitUtils.getInstance();
+    }
+
+    public void getTTTGameState(Callback<TicTacToeGameDTO> callback, String gameHost, String sessionId) {
+        TicTacToeEndpoint ticTacToeEndpoint = RetrofitUtils.getTicTacToeEndpointRetrofit();
+        Call<TicTacToeGameDTO> getTicTacToeStateCall = ticTacToeEndpoint.getTTTGameState(gameHost, sessionId);
+        getTicTacToeStateCall.enqueue(callback);
+    }
+
+    public void sendInsertedSign(Callback<String> callback, String coordinatesString, String sessionId) {
+        TicTacToeEndpoint ticTacToeEndpoint = RetrofitUtils.getTicTacToeEndpointRetrofit();
+        Call<String> insertSymbolCall = ticTacToeEndpoint.sendTTTInsertedSymbol(coordinatesString, sessionId);
+        insertSymbolCall.enqueue(callback);
+
     }
 }

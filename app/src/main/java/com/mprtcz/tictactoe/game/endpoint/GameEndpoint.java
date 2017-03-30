@@ -1,7 +1,7 @@
 package com.mprtcz.tictactoe.game.endpoint;
 
 import com.mprtcz.tictactoe.game.model.GameRecord;
-import com.mprtcz.tictactoe.game.model.TicTacToeGame;
+import com.mprtcz.tictactoe.game.model.TicTacToeGameDTO;
 
 import java.util.List;
 
@@ -21,5 +21,7 @@ public interface GameEndpoint {
     Call<List<GameRecord>> getUserHistory(@Path("username") String username, @Header("Cookie") String jSessionId);
 
     @GET("/api/games/")
-    Call<List<TicTacToeGame>> getTicTacToeGames(@Header("Cookie") String jSessionId);
+    Call<List<TicTacToeGameDTO>> getTicTacToeGames(@Header("Cookie") String jSessionId);
+
+
 }

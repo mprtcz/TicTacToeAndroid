@@ -3,6 +3,7 @@ package com.mprtcz.tictactoe.asyncservice;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mprtcz.tictactoe.game.endpoint.GameEndpoint;
+import com.mprtcz.tictactoe.game.endpoint.TicTacToeEndpoint;
 import com.mprtcz.tictactoe.user.endpoint.UserEndpoint;
 
 import okhttp3.OkHttpClient;
@@ -14,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Azet on 2017-03-23.
  */
 
-public class RetrofitUtils {
+class RetrofitUtils {
     private static final String BASE_URL = "http://192.168.0.4:8080";
     private Retrofit retrofit;
     private static RetrofitUtils retrofitUtils;
@@ -41,17 +42,22 @@ public class RetrofitUtils {
         return retrofit;
     }
 
-    public static UserEndpoint getUserEndpointRetrofit() {
+    static UserEndpoint getUserEndpointRetrofit() {
         Retrofit retrofit = getInstance();
         return retrofit.create(UserEndpoint.class);
     }
 
-    public static GameEndpoint getGameEndpointRetrofit() {
+    static GameEndpoint getGameEndpointRetrofit() {
         Retrofit retrofit = getInstance();
         return retrofit.create(GameEndpoint.class);
     }
 
-    public static Retrofit getInstance() {
+    public static TicTacToeEndpoint getTicTacToeEndpointRetrofit() {
+        Retrofit retrofit = getInstance();
+        return retrofit.create(TicTacToeEndpoint.class);
+    }
+
+    static Retrofit getInstance() {
         if (retrofitUtils == null) {
             retrofitUtils = new RetrofitUtils();
         }

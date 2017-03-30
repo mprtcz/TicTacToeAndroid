@@ -1,18 +1,12 @@
 package com.mprtcz.tictactoe.game.service;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.game.model.GameRecord;
-import com.mprtcz.tictactoe.game.model.TicTacToeGame;
+import com.mprtcz.tictactoe.game.model.TicTacToeGameDTO;
 import com.mprtcz.tictactoe.uielements.GameRecordsTable;
 import com.mprtcz.tictactoe.utils.LoggedUserDataStore;
 
@@ -21,6 +15,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.mprtcz.tictactoe.utils.UiTablesComposer.getExistingGameTableHeader;
+import static com.mprtcz.tictactoe.utils.UiTablesComposer.getExistingGameTableRow;
 
 /**
  * Created by Azet on 2017-03-23.
@@ -44,18 +41,19 @@ public class GameService {
         this.asyncService.getActiveTTTGames(getExistingGamesCallback(tableLayout), LoggedUserDataStore.getSessionId());
     }
 
-    private Callback<List<TicTacToeGame>> getExistingGamesCallback(final TableLayout tableLayout) {
-        return new Callback<List<TicTacToeGame>>() {
+    private Callback<List<TicTacToeGameDTO>> getExistingGamesCallback(final TableLayout tableLayout) {
+        return new Callback<List<TicTacToeGameDTO>>() {
             @Override
-            public void onResponse(Call<List<TicTacToeGame>> call, Response<List<TicTacToeGame>> response) {
+            public void onResponse(Call<List<TicTacToeGameDTO>> call, Response<List<TicTacToeGameDTO>> response) {
                 if (response.code() == 200) {
-                    List<TicTacToeGame> existingGames = response.body();
+                    List<TicTacToeGameDTO> existingGames = response.body();
+                    Log.i(TAG, "onResponse: existingGames = " + existingGames.toString());
                     populateExistingGamesTable(existingGames, tableLayout);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<TicTacToeGame>> call, Throwable t) {
+            public void onFailure(Call<List<TicTacToeGameDTO>> call, Throwable t) {
                 Log.i(TAG, "onFailure: Existing games request failed " + t.toString());
                 t.printStackTrace();
             }
@@ -86,41 +84,11 @@ public class GameService {
         gameRecordsTable.populateTableRows(tableLayout, gameRecords);
     }
 
-    private void populateExistingGamesTable(List<TicTacToeGame> existingGames, TableLayout tableLayout) {
+    private void populateExistingGamesTable(List<TicTacToeGameDTO> existingGames, TableLayout tableLayout) {
         tableLayout.addView(getExistingGameTableHeader(tableLayout.getContext()));
-        for (TicTacToeGame game : existingGames) {
+        for (TicTacToeGameDTO game : existingGames) {
             tableLayout.addView(getExistingGameTableRow(game, tableLayout.getContext()));
         }
-    }
-
-    private TableRow getExistingGameTableHeader(Context context) {
-        TableRow tableHeader = new TableRow(context);
-        TextView gameHostTExtView = new TextView(context);
-        gameHostTExtView.setText(R.string.game_host_table_header);
-        TextView secondPlayerTextView = new TextView(context);
-        secondPlayerTextView.setText(R.string.second_player_table_header);
-        tableHeader.addView(gameHostTExtView);
-        tableHeader.addView(secondPlayerTextView);
-        return tableHeader;
-    }
-
-    private TableRow getExistingGameTableRow(TicTacToeGame existingGame, Context context) {
-        TableRow tableRow = new TableRow(context);
-        TextView gameHostTextView = new TextView(context);
-        gameHostTextView.setText(existingGame.getGameHost());
-        View secondPlayer;
-        if (existingGame.getSecondPlayer() == null) {
-            Button joinButton = new Button(context);
-            joinButton.setText(R.string.join_specific_game_button_text);
-            secondPlayer = joinButton;
-        } else {
-            TextView secondPlayerTextView = new TextView(context);
-            secondPlayerTextView.setText(existingGame.getSecondPlayer());
-            secondPlayer = secondPlayerTextView;
-        }
-        tableRow.addView(gameHostTextView);
-        tableRow.addView(secondPlayer);
-        return tableRow;
     }
 
     public static GameService getInstance(AsyncService asyncService) {

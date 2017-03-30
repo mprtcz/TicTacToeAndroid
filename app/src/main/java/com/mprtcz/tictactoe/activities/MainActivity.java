@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     public void onGamesOverviewButtonClicked(View view) {
         Intent intent;
         if (LoggedUserDataStore.isUserLoggedIn()) {
-            intent = new Intent(this, GamesOverview.class);
+            intent = new Intent(this, GamesOverviewActivity.class);
         } else {
             intent = new Intent(this, LoginActivity.class);
         }
