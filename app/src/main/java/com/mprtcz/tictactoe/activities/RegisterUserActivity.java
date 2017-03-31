@@ -19,36 +19,40 @@ import com.mprtcz.tictactoe.user.service.UserService;
 
 import java.util.Arrays;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RegisterUserActivity extends AppCompatActivity implements UserRegister, UserLogin {
     private static final String TAG = "RegisterUserActivity";
-    EditText usernameTextEdit;
-    EditText nicknameTextEdit;
-    EditText passwordTextEdit;
-    EditText confirmPasswordTextEdit;
-    EditText emailTextEdit;
+
+    @BindView(R.id.registerUserButton)
     Button confirmButton;
+    @BindView(R.id.registerUsernameEditText)
+    EditText usernameTextEdit;
+    @BindView(R.id.registerUserNicknameEditText)
+    EditText nicknameTextEdit;
+    @BindView(R.id.registerUserPasswordEditText)
+    EditText passwordTextEdit;
+    @BindView(R.id.registerUserConfirmPasswordEditText)
+    EditText confirmPasswordTextEdit;
+    @BindView(R.id.registerUserEmailEditText)
+    EditText emailTextEdit;
+    @BindView(R.id.registrationStatusTextView)
     TextView registrationStatusTextView;
+
     UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
-        getViewReferences();
-    }
-
-    private void getViewReferences() {
-        this.confirmButton = (Button) findViewById(R.id.registerUserButton);
-        this.usernameTextEdit = (EditText) findViewById(R.id.registerUsernameEditText);
-        this.nicknameTextEdit = (EditText) findViewById(R.id.registerUserNicknameEditText);
-        this.passwordTextEdit = (EditText) findViewById(R.id.registerUserPasswordEditText);
-        this.confirmPasswordTextEdit = (EditText) findViewById(R.id.registerUserConfirmPasswordEditText);
-        this.emailTextEdit = (EditText) findViewById(R.id.registerUserEmailEditText);
-        this.registrationStatusTextView = (TextView) findViewById(R.id.registrationStatusTextView);
+        ButterKnife.bind(this);
     }
 
     public void onRegisterUserButtonClicked(View view) {
-        if(!isDataValid()) {return;}
+        if (!isDataValid()) {
+            return;
+        }
         NewUser newUser = new NewUser();
         newUser.setSsoId(this.usernameTextEdit.getText().toString());
         newUser.setNickname(this.nicknameTextEdit.getText().toString());
@@ -65,7 +69,7 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
         isValid &= isEditTextFilled(this.confirmPasswordTextEdit);
         isValid &= isEditTextFilled(this.emailTextEdit);
         Log.i(TAG, "isDataValid pre-pw equality: " + isValid);
-        if(isValid) {
+        if (isValid) {
             isValid = arePasswordsEqual();
         }
         Log.i(TAG, "isDataValid: " + isValid);
@@ -74,7 +78,7 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
 
     private boolean arePasswordsEqual() {
         Log.i(TAG, "checking password equality");
-        if(!this.passwordTextEdit.getText().toString().equals(this.confirmPasswordTextEdit.getText().toString())) {
+        if (!this.passwordTextEdit.getText().toString().equals(this.confirmPasswordTextEdit.getText().toString())) {
             this.passwordTextEdit.setError("Password do not match");
             this.confirmPasswordTextEdit.setError("Password do not match");
             return false;
@@ -83,8 +87,8 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
     }
 
     private boolean isEditTextFilled(EditText editText) {
-        if(editText.getText().toString().isEmpty()) {
-            Log.i(TAG, "isEditTextFilled: " +editText.getText().toString() + " appears to be empty");
+        if (editText.getText().toString().isEmpty()) {
+            Log.i(TAG, "isEditTextFilled: " + editText.getText().toString() + " appears to be empty");
             editText.setError(getString(R.string.registration_field_empty_text));
             return false;
         }
@@ -101,10 +105,14 @@ public class RegisterUserActivity extends AppCompatActivity implements UserRegis
         Log.i(TAG, "showBackendErrorResponse: errors: " + Arrays.toString(errors));
         for (UserRegistrationError error : errors) {
             switch (error.getProperty()) {
-                case "SsoId" : this.usernameTextEdit.setError(error.getMessage()); break;
-                case "Email" : this.emailTextEdit.setError(error.getMessage()); break;
+                case "SsoId":
+                    this.usernameTextEdit.setError(error.getMessage());
+                    break;
+                case "Email":
+                    this.emailTextEdit.setError(error.getMessage());
+                    break;
                 default: {
-                    Log.i(TAG, "showBackendErrorResponse: unrecognized case for error property: " +error.getProperty());
+                    Log.i(TAG, "showBackendErrorResponse: unrecognized case for error property: " + error.getProperty());
                 }
             }
         }

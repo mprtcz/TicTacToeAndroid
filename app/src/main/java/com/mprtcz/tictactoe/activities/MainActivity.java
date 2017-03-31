@@ -17,12 +17,19 @@ import com.mprtcz.tictactoe.utils.ToolbarHelper;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
+    @BindView(R.id.usersOnlineListView)
     ListView usersOnlineListView;
+    @BindView(R.id.summaryTextView)
     TextView summaryTextView;
+    @BindView(R.id.loginRegisterButton)
     Button loginRegisterButton;
+
     UserService userService;
     ArrayAdapter<String> userNamesArrayAdapter;
     private ArrayAdapter<String> onlineGamesArrayAdapter;
@@ -32,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(ToolbarHelper.chooseToolbarIcons(this));
-        getUIElementsReferences();
+        ButterKnife.bind(this);
         getFieldsReferences();
         if (savedInstanceState == null) {
             getUsersFromServer();
@@ -48,12 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void getUsersFromServer() {
         this.userService.getServerSummary(this.userNamesArrayAdapter, this.summaryTextView, this.onlineGamesArrayAdapter);
-    }
-
-    private void getUIElementsReferences() {
-        this.usersOnlineListView = (ListView) findViewById(R.id.usersOnlineListView);
-        this.summaryTextView = (TextView) findViewById(R.id.summaryTextView);
-        this.loginRegisterButton = (Button) findViewById(R.id.loginRegisterButton);
     }
 
     public void onLoginRegisterButtonClicked(View view) {

@@ -96,14 +96,17 @@ public class TicTacToeService {
     }
 
     private void sendInsertion(int index) {
-        this.asyncService.sendInsertedSign(getInsertionCallback(), parseCoordinates(index), LoggedUserDataStore.getSessionId());
+        this.asyncService.sendInsertedSign(
+                getInsertionCallback(),
+                parseCoordinates(index),
+                LoggedUserDataStore.getSessionId());
     }
 
     private Callback<String> getInsertionCallback() {
         return new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     Log.i(TAG, "onResponse: ALL OK");
                 } else {
                     try {
@@ -116,7 +119,7 @@ public class TicTacToeService {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.w(TAG, "onFailure: Failure during symbol insertion " +t.toString());
+                Log.w(TAG, "onFailure: Failure during symbol insertion " + t.toString());
             }
         };
     }
@@ -127,12 +130,13 @@ public class TicTacToeService {
         return firstCoordinate + ":" + secondCoordinate;
     }
 
-
     private void checkIfSomeoneJoinedGame() {
         getGameState();
     }
 
     private void getGameState() {
-        this.asyncService.getTTTGameState(getGameStateCallback(), LoggedUserDataStore.getLoggedInUser().getSsoId(), LoggedUserDataStore.getSessionId());
+        this.asyncService.getTTTGameState(getGameStateCallback(),
+                LoggedUserDataStore.getLoggedInUser().getSsoId(),
+                LoggedUserDataStore.getSessionId());
     }
 }

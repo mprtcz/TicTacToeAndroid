@@ -13,37 +13,50 @@ import com.mprtcz.tictactoe.game.service.TicTacToeService;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TicTacToeActivity extends AppCompatActivity {
-    Button[] gameButtons;
     TicTacToeService ticTacToeService;
     TicTacToeGame ticTacToeGame;
+    @BindView(R.id.field0GameButton)
+    Button field0GameButton;
+    @BindView(R.id.field1GameButton)
+    Button field1GameButton;
+    @BindView(R.id.field2GameButton)
+    Button field2GameButton;
+    @BindView(R.id.field3GameButton)
+    Button field3GameButton;
+    @BindView(R.id.field4GameButton)
+    Button field4GameButton;
+    @BindView(R.id.field5GameButton)
+    Button field5GameButton;
+    @BindView(R.id.field6GameButton)
+    Button field6GameButton;
+    @BindView(R.id.field7GameButton)
+    Button field7GameButton;
+    @BindView(R.id.field8GameButton)
+    Button field8GameButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tic_tac_toe);
+        ButterKnife.bind(this);
+        setButtonsCallbacks();
         createNewTicTacToeGame();
     }
 
-    private void getButtonsReferencesAndCallbacks() {
+    private void setButtonsCallbacks() {
         List<Button> buttons = new ArrayList<>();
-        Button field0GameButton = (Button) findViewById(R.id.field0GameButton);
         field0GameButton.setOnClickListener(getClickListener(0));
-        Button field1GameButton = (Button) findViewById(R.id.field1GameButton);
         field1GameButton.setOnClickListener(getClickListener(1));
-        Button field2GameButton = (Button) findViewById(R.id.field2GameButton);
         field2GameButton.setOnClickListener(getClickListener(2));
-        Button field3GameButton = (Button) findViewById(R.id.field3GameButton);
         field3GameButton.setOnClickListener(getClickListener(3));
-        Button field4GameButton = (Button) findViewById(R.id.field4GameButton);
         field4GameButton.setOnClickListener(getClickListener(4));
-        Button field5GameButton = (Button) findViewById(R.id.field5GameButton);
         field5GameButton.setOnClickListener(getClickListener(5));
-        Button field6GameButton = (Button) findViewById(R.id.field6GameButton);
         field6GameButton.setOnClickListener(getClickListener(6));
-        Button field7GameButton = (Button) findViewById(R.id.field7GameButton);
         field7GameButton.setOnClickListener(getClickListener(7));
-        Button field8GameButton = (Button) findViewById(R.id.field8GameButton);
         field8GameButton.setOnClickListener(getClickListener(8));
 
         buttons.add(field0GameButton);
@@ -59,11 +72,11 @@ public class TicTacToeActivity extends AppCompatActivity {
         ticTacToeGame.setButtons(buttons);
     }
 
-    private View.OnClickListener getClickListener(final int buttonIdex) {
+    private View.OnClickListener getClickListener(final int buttonIndex) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ticTacToeService.insertSymbol(buttonIdex);
+                ticTacToeService.insertSymbol(buttonIndex);
             }
         };
     }

@@ -14,18 +14,25 @@ import com.mprtcz.tictactoe.R;
 import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.game.service.GameService;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class GamesOverviewActivity extends AppCompatActivity {
-    String[] gameNames = new String[] {"TicTacToe"};
+    String[] gameNames = new String[]{"TicTacToe"};
+    @BindView(R.id.startJoinGameTableLayout)
+    TableLayout tableLayout;
+    @BindView(R.id.existingGamesTableLayout)
+    TableLayout existingGamesTableLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games_overview);
+        ButterKnife.bind(this);
         populateTableWithGameTypes();
     }
 
     private void populateTableWithGameTypes() {
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.startJoinGameTableLayout);
         for (String s : gameNames) {
             tableLayout.addView(getGameTypeTableRow(s));
         }
@@ -79,7 +86,6 @@ public class GamesOverviewActivity extends AppCompatActivity {
 
     private void getActiveGamesFromServer() {
         GameService gameService = GameService.getInstance(new AsyncService());
-        TableLayout existingGamesTableLayout = (TableLayout) findViewById(R.id.existingGamesTableLayout);
         gameService.getExistingGamesFromServer(existingGamesTableLayout);
     }
 }

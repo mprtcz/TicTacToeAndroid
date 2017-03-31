@@ -11,21 +11,21 @@ import com.mprtcz.tictactoe.asyncservice.AsyncService;
 import com.mprtcz.tictactoe.interfaces.UserLogin;
 import com.mprtcz.tictactoe.user.service.UserService;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends AppCompatActivity implements UserLogin {
 
+    @BindView(R.id.loginUsername)
     EditText loginUsernameEditText;
+    @BindView(R.id.loginPassword)
     EditText loginPasswordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getUiReferences();
-    }
-
-    private void getUiReferences() {
-        this.loginUsernameEditText = (EditText) findViewById(R.id.loginUsername);
-        this.loginPasswordEditText = (EditText) findViewById(R.id.loginPassword);
+        ButterKnife.bind(this);
     }
 
     public void onLoginRegisterLinkTextViewClicked(View view) {
@@ -53,14 +53,6 @@ public class LoginActivity extends AppCompatActivity implements UserLogin {
             this.loginPasswordEditText.setError(getString(R.string.login_password_empty));
         }
         return flag;
-    }
-
-    public String getLoginUsername() {
-        return loginUsernameEditText.getText().toString();
-    }
-
-    public String getLoginPassword() {
-        return loginPasswordEditText.getText().toString();
     }
 
     public void setBadCredentialsErrorMessage() {
